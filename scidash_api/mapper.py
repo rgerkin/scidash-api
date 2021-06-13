@@ -1,7 +1,8 @@
-import logging
+import binascii
 import copy
-
 import dpath.util
+import logging
+import os
 
 from scidash_api.exceptions import ScidashClientException
 from scidash_api.validator import ScidashClientDataValidator
@@ -169,7 +170,8 @@ class ScidashClientMapper(object):
         if raw_data is None:
             return raw_data
 
-        raw_data = raw_data['py/state']
+        if 'py/state' in raw_data:
+            raw_data = raw_data['py/state']
 
         if not self.validator.validate_score(raw_data) and strict:
             raise ScidashClientException('CLIENT -> INVALID DATA: '
@@ -210,7 +212,6 @@ class ScidashClientMapper(object):
         except KeyError:
             pass
 
-        import os,binascii
         model_instance_hash_id = '{}_{}'.format(
                 raw_data.get('model').get('hash', binascii.b2a_hex(os.urandom(15))),
                 raw_data.get('model').get('_id', -1)

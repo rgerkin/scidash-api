@@ -231,7 +231,7 @@ class ScidashClientDataValidator():
             except:
                 sciunit.config.set('PREVALIDATE', True)
 
-        class_data = data.get('test_class')
+        class_data = data.get('test').get('_class')
         if not class_data:
             class_data = data.get('test').get("py/state").get('_class')
 
